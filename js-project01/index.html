@@ -4,6 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JS Drum Kit</title>
+
+    <style>
+      * {margin: 0; padding: 0; box-sizing: border-box;}
+
+      body {
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        height: 100vh; 
+        width: 100%; 
+        background-color: #000;
+      }
+
+      .keys {
+        display: flex; 
+        justify-content: space-around; 
+        align-items: center; 
+        width: 100%; 
+        height: 400px; 
+        background-color: #333;
+      }
+
+      .key {
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 1rem;
+        width: 130px;
+        border: none;
+        border-radius: 20px;
+        font-size: large;
+        transition: all 0.07s ease;
+      }
+
+      .key.active {
+        transform: scale(1.1);
+        border: #ffc600 solid 6px;
+      }
+
+      .key .sound {font-size: small;}
+    </style>
   </head>
   <body>
     <div class="keys">
@@ -56,12 +99,26 @@
     </div>
 
     <script>
-      window.addEventListener("keydown", (e) => {
+      function playSound (e) {
+        const key = document.querySelector(`.key[data-key="${e.key.toUpperCase()}"]`);
         const audio = document.querySelector(`audio[data-key="${e.key.toUpperCase()}"]`); // Convert pressed key to uppercase (so 'a' or 'A' both match)
         if (!audio) return;  // Exit if no audio found
         audio.currentTime = 0; // Reset before playing
         audio.play();
-      });
+        if(key) {
+          key.classList.add("active");       
+        }
+      }
+      
+      function removeTransition(e) {
+        if (e.propertyName !== "transform") return;
+        this.classList.remove("active")
+      };
+      
+      const keys = document.querySelectorAll(".key");
+      keys.forEach(key => key.addEventListener("transitionend", removeTransition));
+
+      window.addEventListener("keydown", playSound);
     </script>
   </body>
 </html>
