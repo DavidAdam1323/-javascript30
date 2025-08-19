@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS + JS Clock</title>
+
+    <style>
+      *,
+      *::before,
+      *::after {margin: 0; padding: 0; box-sizing: border-box;}
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100%;
+        background-color: #333;
+      }
+
+      .clock {
+        width: 80vmin;
+        height: 80vmin;
+        border: 1vmin solid white;
+        border-radius: 50%;
+        position: relative;
+        padding: 1rem;
+      }
+
+      .clock-face {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform: translateY(-3px);
+      }
+
+      .center-point {
+        width: 20px;
+        height: 20px;
+        background-color: black;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .hand {
+        width: 50%;
+        background-color: black;
+        border-radius: 20px;
+        position: absolute;
+        top: 50%;
+        transform-origin: 100%;
+        transform: rotate(90deg);
+        transition: all 0.05s ease;
+        transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+      }
+
+      .hour-hand {height: 8px; background: white;}
+      .min-hand {height: 6px; background: black;}
+      .sec-hand {height: 3px; background: red;}
+    </style>
+  </head>
+  <body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand sec-hand"></div>
+        <div class="center-point"></div>
+      </div>
+    </div>
+
+    <script>
+      // Grab the hands from the DOM
+      const secHand = document.querySelector(".sec-hand");
+      const minHand = document.querySelector(".min-hand");
+      const hourHand = document.querySelector(".hour-hand");
+
+      // Function that updates the clock hands every second
+      function setDate() {
+        const now = new Date(); // get current time
+
+        // ----- SECOND HAND -----
+        const seconds = now.getSeconds(); // get current seconds
+        const secondsDegrees = (seconds / 60) * 360 + 90; // convert to degrees
+        // Fix flicker when the hand resets from 59s → 0s
+        if (seconds === 0) {
+          secHand.style.transition = "none";
+        } else {
+          secHand.style.transition = "";
+        }
+        secHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+        // ----- MINUTE HAND -----
+        const mins = now.getMinutes(); // get current minutes
+        // add small adjustment based on seconds so it moves smoothly
+        const minsDegrees = (mins / 60) * 360 + (seconds / 60) * 6 + 90;
+        minHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+        // ----- HOUR HAND -----
+        const hours = now.getHours(); // get current hours
+        // add adjustment based on minutes so it moves smoothly
+        const hoursDegrees = (hours / 12) * 360 + (mins / 60) * 30 + 90;
+        hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+      }
+
+      // Run setDate() every second
+      setInterval(setDate, 1000);
+
+      // Call once immediately so the clock shows correct time on load
+      setDate();
+    </script>
+  </body>
+</html>
