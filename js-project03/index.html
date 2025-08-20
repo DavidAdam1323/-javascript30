@@ -12,18 +12,22 @@
         --blur: 10px;
       }
 
-      * {margin: 0; padding: 0; box-sizing: border-box;}
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
       body {
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-        align-items: center; 
-        background-color: #111; 
-        color: white; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #111;
+        color: white;
         width: 100%;
         height: 100vh;
-        text-align:center;
+        text-align: center;
       }
 
       .controls {
@@ -42,35 +46,64 @@
     </style>
   </head>
   <body>
-
     <h2>Update CSS variables with <span class="highlight">JS</span></h2>
     <div class="controls">
       <label for="spacing">Spacing:</label>
-      <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+      <input
+        type="range"
+        name="spacing"
+        min="10"
+        max="200"
+        value="10"
+        data-sizing="px"
+      />
 
       <label for="blur">Blur:</label>
-      <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+      <input
+        type="range"
+        name="blur"
+        min="0"
+        max="25"
+        value="10"
+        data-sizing="px"
+      />
 
       <label for="base">Base Colour:</label>
-      <input type="color" name="base" value="#ffc600">
+      <input type="color" name="base" value="#ffc600" />
     </div>
 
-    <img src="https://t3.ftcdn.net/jpg/14/34/12/78/240_F_1434127802_hQcB5ZE4B7kXwJzYCTYal8mXELNEY3N9.jpg">
+    <img
+      src="https://t3.ftcdn.net/jpg/14/34/12/78/240_F_1434127802_hQcB5ZE4B7kXwJzYCTYal8mXELNEY3N9.jpg"
+    />
 
     <script>
+      // Select all input elements inside the ".controls" container
       const inputs = document.querySelectorAll(".controls input");
 
+      // Function that updates the CSS variables when an input value changes
       function handleUpdate() {
-        const {name, value, dataset} = this;
-        const suffix = dataset.sizing || "";
-        document.documentElement.style.setProperty(`--${name}`, value + suffix);
-      };
+        // Destructure the input's properties:
+        // - name: the CSS variable name (e.g., "spacing", "blur", "base")
+        // - value: the current value of the input
+        // - dataset: contains custom data attributes (like data-sizing)
+        const { name, value, dataset } = this;
 
-      inputs.forEach(input => {
+        // Some inputs (like spacing and blur) need a unit (e.g., "px")
+        // For the color input, dataset.sizing is undefined, so fallback to empty string
+        const suffix = dataset.sizing || "";
+
+        // Update the CSS variable dynamically on the root element (:root)
+        // Example: --spacing: 20px; or --base: #ff0000;
+        document.documentElement.style.setProperty(`--${name}`, value + suffix);
+      }
+
+      // Listen for changes on each input
+      // "change" → fires when input value changes and loses focus
+      // "mousemove" → fires as you drag sliders (gives real-time updates)
+      inputs.forEach((input) => {
         input.addEventListener("change", handleUpdate);
         input.addEventListener("mousemove", handleUpdate);
       });
-
     </script>
   </body>
 </html>
