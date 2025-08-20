@@ -6,6 +6,12 @@
     <title>CSS Variable & JS</title>
 
     <style>
+      :root {
+        --base: #ffc600;
+        --spacing: 10px;
+        --blur: 10px;
+      }
+
       * {margin: 0; padding: 0; box-sizing: border-box;}
 
       body {
@@ -22,6 +28,16 @@
 
       .controls {
         margin-bottom: 50px;
+      }
+
+      .hight-light {
+        color: var(--base);
+      }
+
+      img {
+        padding: var(--spacing);
+        background-color: var(--base);
+        filter: blur(var(--blur));
       }
     </style>
   </head>
