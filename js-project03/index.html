@@ -31,7 +31,23 @@
       }
 
       .controls {
+        display: flex;
         margin-bottom: 50px;
+        justify-content: center;
+        align-items: center;
+        padding-top: 30px;
+        gap: 20px;
+      }
+      
+      @media (max-width: 800px){
+        .controls {
+          flex-direction: column;
+        }
+      }
+
+      .controls input[type="range"] {
+        width: 200px;
+        margin: 0 10px;
       }
 
       .highlight {
@@ -42,6 +58,9 @@
         padding: var(--spacing);
         background-color: var(--base);
         filter: blur(var(--blur));
+        max-width: 80%;
+        height: auto;
+        transition: all 0.3s ease;
       }
     </style>
   </head>
