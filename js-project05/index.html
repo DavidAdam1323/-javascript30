@@ -117,5 +117,33 @@
         <p>Motion</p>
       </div>
     </div>
+    
+    <script>
+      // Select all elements with the class "panel"
+      const panels = document.querySelectorAll(".panel");
+
+      // Function to toggle the "open" class when a panel is clicked
+      function toggleOpen() {
+        this.classList.toggle("open"); // Toggles a CSS class to trigger flex growth
+      }
+
+      // Function to toggle the "open-active" class after transition finishes
+      function toggleActive(e) {
+        // Check if the transition that ended was related to "flex"
+        if (e.propertyName.includes("flex")) {
+          this.classList.toggle("open-active"); // Toggles extra styling after animation
+        }
+      }
+
+      // Add click event to each panel to toggle "open"
+      panels.forEach(function (panel) {
+        panel.addEventListener("click", toggleOpen);
+      });
+
+      // Add transitionend event to each panel to toggle "open-active"
+      panels.forEach(function (panel) {
+        panel.addEventListener("transitionend", toggleActive);
+      });
+    </script>
   </body>
 </html>
