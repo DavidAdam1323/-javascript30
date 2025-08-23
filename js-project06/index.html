@@ -144,11 +144,11 @@
           .map(
             (place) =>
               `<div class="city-card">
-            <div class="city-name">${place.name}</div>
-            <div class="population">
-              Population: ${place.population?.toLocaleString() || "N/A"}
-            </div>
-          </div>`
+                <div class="city-name">${place.name}</div>
+                <div class="population">
+                  Population: ${place.population?.toLocaleString() || "N/A"}
+                </div>
+              </div>`
           )
           .join(" "); // Join all city results into one string for display
       });
