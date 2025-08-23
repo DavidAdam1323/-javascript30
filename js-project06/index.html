@@ -98,5 +98,60 @@
       />
     </div>
     <div class="display-info"></div>
+    <script>
+      // API endpoint that returns up to 500 cities from the UK
+      // 'refine.country_code=GB' ensures only UK cities are included
+      const endpoint =
+        "https://public.opendatasoft.com/api/records/1.0/search/?" +
+        "dataset=geonames-all-cities-with-a-population-1000&rows=500&refine.country_code=GB";
+
+      // Array to store city data (name and population) after fetching
+      const cities = [];
+
+      // Fetch data from the API
+      fetch(endpoint)
+        .then((response) => response.json()) // Convert response to JSON
+        .then((data) => {
+          // Loop through each record returned from the API
+          data.records.forEach((record) => {
+            // Push relevant fields (name and population) into cities array
+            cities.push({
+              name: record.fields.name,
+              population: record.fields.population,
+            });
+          });
+        });
+
+      // Function to find cities that match the user's search input
+      function findMatches(wordToMatch, cities) {
+        // Create a case-insensitive regular expression from the input
+        const regex = new RegExp(wordToMatch, "i");
+        // Filter cities array for matches in the 'name' property
+        return cities.filter((place) => place.name.match(regex));
+      }
+
+      // Get references to the input field and the display container
+      const input = document.querySelector("#cityInput");
+      const display = document.querySelector(".display-info");
+
+      // Listen for typing in the search input field
+      input.addEventListener("input", () => {
+        // Get matching cities based on current input value
+        const matchArray = findMatches(input.value, cities);
+
+        // Render results dynamically as HTML
+        display.innerHTML = matchArray
+          .map(
+            (place) =>
+              `<div class="city-card">
+            <div class="city-name">${place.name}</div>
+            <div class="population">
+              Population: ${place.population?.toLocaleString() || "N/A"}
+            </div>
+          </div>`
+          )
+          .join(" "); // Join all city results into one string for display
+      });
+    </script>
   </body>
 </html>
